@@ -1,0 +1,4027 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <meta content="width=device-width,initial-scale=1" name="viewport"/>
+  <meta content="ie=edge" http-equiv="x-ua-compatible"/>
+  <meta content="Copy to clipboard" name="lang:clipboard.copy"/>
+  <meta content="Copied to clipboard" name="lang:clipboard.copied"/>
+  <meta content="en" name="lang:search.language"/>
+  <meta content="True" name="lang:search.pipeline.stopwords"/>
+  <meta content="True" name="lang:search.pipeline.trimmer"/>
+  <meta content="No matching documents" name="lang:search.result.none"/>
+  <meta content="1 matching document" name="lang:search.result.one"/>
+  <meta content="# matching documents" name="lang:search.result.other"/>
+  <meta content="[\s\-]+" name="lang:search.tokenizer"/>
+  <link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,500,700|Roboto:300,400,400i,700&amp;display=fallback" rel="stylesheet"/>
+  <style>
+   body,
+      input {
+        font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif
+      }
+
+      code,
+      kbd,
+      pre {
+        font-family: "Roboto Mono", "Courier New", Courier, monospace
+      }
+  </style>
+  <link href="_static/stylesheets/application.css" rel="stylesheet"/>
+  <link href="_static/stylesheets/application-palette.css" rel="stylesheet"/>
+  <link href="_static/stylesheets/application-fixes.css" rel="stylesheet"/>
+  <link href="_static/fonts/material-icons.css" rel="stylesheet"/>
+  <meta content="#2196f3" name="theme-color"/>
+  <script src="_static/javascripts/modernizr.js">
+  </script>
+  <script>
+   window.ga = window.ga || function () {
+          (ga.q = ga.q || []).push(arguments)
+      };
+      ga.l = +new Date;
+      ga('create', 'UA-XXXXX', 'auto');
+      ga('send', 'pageview');
+  </script>
+  <script async="" src="https://www.google-analytics.com/analytics.js">
+  </script>
+  <title>
+   Data model — Zendesk data pipeline
+  </title>
+  <link href="_static/material.css" rel="stylesheet" type="text/css"/>
+  <link href="_static/pygments.css" rel="stylesheet" type="text/css"/>
+  <link href="_static/styles/custom.css" rel="stylesheet" type="text/css"/>
+  <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js">
+  </script>
+  <script src="_static/jquery.js">
+  </script>
+  <script src="_static/underscore.js">
+  </script>
+  <script src="_static/doctools.js">
+  </script>
+  <script src="_static/language_data.js">
+  </script>
+  <link href="genindex.html" rel="index" title="Index"/>
+  <link href="search.html" rel="search" title="Search"/>
+  <link href="infrastructure.html" rel="prev" title="Used infrastructure"/>
+ </head>
+ <body data-md-color-accent="cyan" data-md-color-primary="blue" dir="ltr">
+  <svg class="md-svg">
+   <defs data-children-count="0">
+    <svg height="448" id="__github" viewbox="0 0 416 448" width="416" xmlns="http://www.w3.org/2000/svg">
+     <path d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z" fill="currentColor">
+     </path>
+    </svg>
+   </defs>
+  </svg>
+  <input class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+  <input class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+  <label class="md-overlay" data-md-component="overlay" for="__drawer">
+  </label>
+  <a class="md-skip" href="#data-warehouse" tabindex="1">
+   Skip to content
+  </a>
+  <header class="md-header" data-md-component="header">
+   <nav class="md-header-nav md-grid">
+    <div class="md-flex navheader">
+     <div class="md-flex__cell md-flex__cell--shrink">
+      <a class="md-header-nav__button md-logo" href="index.html" title="Zendesk data pipeline">
+       <i class="md-icon">
+        
+       </i>
+      </a>
+     </div>
+     <div class="md-flex__cell md-flex__cell--shrink">
+      <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer">
+      </label>
+     </div>
+     <div class="md-flex__cell md-flex__cell--stretch">
+      <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+       <span class="md-header-nav__topic">
+        Zendesk data pipeline
+       </span>
+       <span class="md-header-nav__topic">
+        Data model
+       </span>
+      </div>
+     </div>
+     <div class="md-flex__cell md-flex__cell--shrink">
+      <label class="md-icon md-icon--search md-header-nav__button" for="__search">
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+       <label class="md-search__overlay" for="__search">
+       </label>
+       <div class="md-search__inner" role="search">
+        <form action="search.html" class="md-search__form" method="GET" name="search">
+         <input autocapitalize="off" autocomplete="off" class="md-search__input" data-md-component="query" data-md-state="active" name="q" placeholder="Search" spellcheck="false" type="text"/>
+         <label class="md-icon md-search__icon" for="__search">
+         </label>
+         <button class="md-icon md-search__icon" data-md-component="reset" tabindex="-1" type="reset">
+          
+         </button>
+        </form>
+        <div class="md-search__output">
+         <div class="md-search__scrollwrap" data-md-scrollfix="">
+          <div class="md-search-result" data-md-component="result">
+           <div class="md-search-result__meta">
+            Type to start searching
+           </div>
+           <ol class="md-search-result__list">
+           </ol>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+     <script src="_static/javascripts/version_dropdown.js">
+     </script>
+     <script>
+      var json_loc = ""versions.json"",
+        target_loc = "../",
+        text = "Versions";
+    $( document ).ready( add_version_dropdown(json_loc, target_loc, text));
+     </script>
+    </div>
+   </nav>
+  </header>
+  <div class="md-container">
+   <nav class="md-tabs" data-md-component="tabs">
+    <div class="md-tabs__inner md-grid">
+     <ul class="md-tabs__list">
+      <li class="md-tabs__item">
+       <a class="md-tabs__link" href="index.html">
+        Zendesk data pipeline
+       </a>
+      </li>
+     </ul>
+    </div>
+   </nav>
+   <main class="md-main">
+    <div class="md-main__inner md-grid" data-md-component="container">
+     <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+      <div class="md-sidebar__scrollwrap">
+       <div class="md-sidebar__inner">
+        <nav class="md-nav md-nav--primary" data-md-level="0">
+         <label class="md-nav__title md-nav__title--site" for="__drawer">
+          <a class="md-nav__button md-logo" href="index.html" title="Zendesk data pipeline">
+           <i class="md-icon">
+            
+           </i>
+          </a>
+          <a href="index.html" title="Zendesk data pipeline">
+           Zendesk data pipeline
+          </a>
+         </label>
+         <ul class="md-nav__list">
+          <li class="md-nav__item">
+           <span class="md-nav__link caption">
+            <span class="caption-text">
+             Introduction
+            </span>
+           </span>
+          </li>
+          <li class="md-nav__item">
+           <a class="md-nav__link" href="index.html">
+            Zendesk data pipeline
+           </a>
+          </li>
+          <li class="md-nav__item">
+           <span class="md-nav__link caption">
+            <span class="caption-text">
+             Infrastructure + data pipeline
+            </span>
+           </span>
+          </li>
+          <li class="md-nav__item">
+           <a class="md-nav__link" href="infrastructure.html">
+            Used infrastructure
+           </a>
+          </li>
+          <li class="md-nav__item">
+           <a class="md-nav__link" href="infrastructure.html#data-processing-pipeline">
+            Data processing pipeline
+           </a>
+          </li>
+          <li class="md-nav__item">
+           <span class="md-nav__link caption">
+            <span class="caption-text">
+             Data warehouse
+            </span>
+           </span>
+          </li>
+          <li class="md-nav__item">
+           <input class="md-toggle md-nav__toggle" data-md-toggle="toc" id="__toc" type="checkbox"/>
+           <label class="md-nav__link md-nav__link--active" for="__toc">
+            Data model
+           </label>
+           <a class="md-nav__link md-nav__link--active" href="#">
+            Data model
+           </a>
+           <nav class="md-nav md-nav--secondary">
+            <label class="md-nav__title" for="__toc">
+             Contents
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix="">
+             <li class="md-nav__item">
+              <a class="md-nav__link" href="#data-warehouse--page-root">
+               Data model
+              </a>
+             </li>
+             <li class="md-nav__item">
+              <a class="md-nav__link" href="#tables">
+               Tables
+              </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#tbl-users">
+                  Users
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#tbl-groups">
+                  Groups
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#tbl-group_memberships">
+                  Group_memberships
+                 </a>
+                </li>
+               </ul>
+              </nav>
+             </li>
+             <li class="md-nav__item">
+              <a class="md-nav__extra_link" href="_sources/data-warehouse.rst.txt">
+               Show Source
+              </a>
+             </li>
+            </ul>
+           </nav>
+          </li>
+          <li class="md-nav__item">
+           <a class="md-nav__link" href="#tables">
+            Tables
+           </a>
+           <ul class="md-nav__list">
+            <li class="md-nav__item">
+             <a class="md-nav__link" href="#tbl-users">
+              Users
+             </a>
+            </li>
+            <li class="md-nav__item">
+             <a class="md-nav__link" href="#tbl-groups">
+              Groups
+             </a>
+            </li>
+            <li class="md-nav__item">
+             <a class="md-nav__link" href="#tbl-group_memberships">
+              Group_memberships
+             </a>
+            </li>
+           </ul>
+          </li>
+         </ul>
+        </nav>
+       </div>
+      </div>
+     </div>
+     <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+      <div class="md-sidebar__scrollwrap">
+       <div class="md-sidebar__inner">
+        <nav class="md-nav md-nav--secondary">
+         <label class="md-nav__title" for="__toc">
+          Contents
+         </label>
+         <ul class="md-nav__list" data-md-scrollfix="">
+          <li class="md-nav__item">
+           <a class="md-nav__link" href="#data-warehouse--page-root">
+            Data model
+           </a>
+          </li>
+          <li class="md-nav__item">
+           <a class="md-nav__link" href="#tables">
+            Tables
+           </a>
+           <nav class="md-nav">
+            <ul class="md-nav__list">
+             <li class="md-nav__item">
+              <a class="md-nav__link" href="#tbl-users">
+               Users
+              </a>
+             </li>
+             <li class="md-nav__item">
+              <a class="md-nav__link" href="#tbl-groups">
+               Groups
+              </a>
+             </li>
+             <li class="md-nav__item">
+              <a class="md-nav__link" href="#tbl-group_memberships">
+               Group_memberships
+              </a>
+             </li>
+            </ul>
+           </nav>
+          </li>
+          <li class="md-nav__item">
+           <a class="md-nav__extra_link" href="_sources/data-warehouse.rst.txt">
+            Show Source
+           </a>
+          </li>
+          <li class="md-nav__item" id="searchbox">
+          </li>
+         </ul>
+        </nav>
+       </div>
+      </div>
+     </div>
+     <div class="md-content">
+      <article class="md-content__inner md-typeset" role="main">
+       <span id="data-warehouse">
+       </span>
+       <h1 id="data-warehouse--page-root">
+        Data model
+        <a class="headerlink" href="#data-warehouse--page-root" title="Permalink to this headline">
+         ¶
+        </a>
+       </h1>
+       <img alt="_images/dataset-diagram-high-level.png" src="_images/dataset-diagram-high-level.png"/>
+       <h1 id="tables">
+        Tables
+        <a class="headerlink" href="#tables" title="Permalink to this headline">
+         ¶
+        </a>
+       </h1>
+       <p>
+        This section outlines all tables which are part of the dataset
+        <code class="docutils literal notranslate">
+         <span class="pre">
+          adm_zendesk_support
+         </span>
+        </code>
+        .
+       </p>
+       <h2 id="tbl-users">
+        Users
+        <a class="headerlink" href="#tbl-users" title="Permalink to this headline">
+         ¶
+        </a>
+       </h2>
+       <table>
+        <colgroup>
+         <col style="width: 17%"/>
+         <col style="width: 83%"/>
+        </colgroup>
+        <thead>
+         <tr class="row-odd">
+          <th class="head">
+           <strong>
+            Table property
+           </strong>
+          </th>
+          <th class="head">
+           <strong>
+            Property value
+           </strong>
+          </th>
+         </tr>
+        </thead>
+        <tbody>
+         <tr class="row-even">
+          <td>
+           <strong>
+            name
+           </strong>
+          </td>
+          <td>
+           <p>
+            users
+           </p>
+          </td>
+         </tr>
+         <tr class="row-odd">
+          <td>
+           <strong>
+            description
+           </strong>
+          </td>
+          <td>
+           <p>
+            The users table contains info about the users associated with your Zendesk Support account. This includes agents, admins, and end-users (customers).
+           </p>
+          </td>
+         </tr>
+         <tr class="row-even">
+          <td>
+           <strong>
+            source
+           </strong>
+          </td>
+          <td>
+           <p>
+            incremental/users.json?start_time={unix_time}
+           </p>
+          </td>
+         </tr>
+         <tr class="row-odd">
+          <td>
+           <strong>
+            partitions
+           </strong>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="p p-Indicator">-</span> <span class="nt">column</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">create_date</span>
+  <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">DAY</span>
+</pre>
+            </div>
+           </div>
+          </td>
+         </tr>
+        </tbody>
+       </table>
+       <p class="section-subtitle">
+        Columns of table: Users
+       </p>
+       <table>
+        <colgroup>
+         <col style="width: 7%"/>
+         <col style="width: 36%"/>
+         <col style="width: 7%"/>
+         <col style="width: 7%"/>
+         <col style="width: 7%"/>
+         <col style="width: 7%"/>
+         <col style="width: 21%"/>
+         <col style="width: 7%"/>
+        </colgroup>
+        <thead>
+         <tr class="row-odd">
+          <th class="head">
+           <strong>
+            Name
+           </strong>
+          </th>
+          <th class="head">
+           <strong>
+            Description
+           </strong>
+          </th>
+          <th class="head">
+           <strong>
+            Data type
+           </strong>
+          </th>
+          <th class="head">
+           <strong>
+            Is primary key
+           </strong>
+          </th>
+          <th class="head">
+           <strong>
+            Unique
+           </strong>
+          </th>
+          <th class="head">
+           <strong>
+            Nullable
+           </strong>
+          </th>
+          <th class="head">
+           <strong>
+            source
+           </strong>
+          </th>
+          <th class="head">
+           <strong>
+            Lookup
+           </strong>
+          </th>
+         </tr>
+        </thead>
+        <tbody>
+         <tr class="row-even">
+          <td>
+           <strong id="tbl-users-col-id">
+            id
+           </strong>
+          </td>
+          <td>
+           <p>
+            Automatically assigned when the user is created
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">INT64</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">True</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">True</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">id</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">id</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">integer</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-odd">
+          <td>
+           <strong id="tbl-users-col-email">
+            email
+           </strong>
+          </td>
+          <td>
+           <p>
+            The user’s primary email address. *Writeable on create only. On update, a secondary email is added. See Email Address
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">STRING</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">email</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">email</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-even">
+          <td>
+           <strong id="tbl-users-col-name">
+            name
+           </strong>
+          </td>
+          <td>
+           <p>
+            The user’s name
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">STRING</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">name</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">name</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-odd">
+          <td>
+           <strong id="tbl-users-col-active">
+            active
+           </strong>
+          </td>
+          <td>
+           <p>
+            false if the user has been deleted
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">BOOL</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">True</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">active</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">active</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">boolean</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-even">
+          <td>
+           <strong id="tbl-users-col-alias">
+            alias
+           </strong>
+          </td>
+          <td>
+           <p>
+            An alias displayed to end users
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">STRING</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">True</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">alias</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">alias</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-odd">
+          <td>
+           <strong id="tbl-users-col-chat_only">
+            chat_only
+           </strong>
+          </td>
+          <td>
+           <p>
+            Whether or not the user is a chat-only agent
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">BOOL</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">True</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">chat_only</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">chat_only</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">boolean</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-even">
+          <td>
+           <strong id="tbl-users-col-create_date">
+            create_date
+           </strong>
+          </td>
+          <td>
+           <p>
+            The date the user was created
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">DATE</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">create_date</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">create_date</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">date</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-odd">
+          <td>
+           <strong id="tbl-users-col-created_at">
+            created_at
+           </strong>
+          </td>
+          <td>
+           <p>
+            The time the user was created
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">DATETIME</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">True</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">created_at</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">created_at</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">date</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-even">
+          <td>
+           <strong id="tbl-users-col-custom_role_id">
+            custom_role_id
+           </strong>
+          </td>
+          <td>
+           <p>
+            A custom role if the user is an agent on the Enterprise plan
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">INT64</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">True</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">custom_role_id</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">custom_role_id</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">integer</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-odd">
+          <td>
+           <strong id="tbl-users-col-role_type">
+            role_type
+           </strong>
+          </td>
+          <td>
+           <p>
+            The user’s role id. 0 for custom agents, 1 for light agent, 2 for chat agent, and 3 for chat agent added to the Support account as a contributor (Chat Phase 4)
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">INT64</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">True</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">role_type</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">role_type</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">integer</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-even">
+          <td>
+           <strong id="tbl-users-col-details">
+            details
+           </strong>
+          </td>
+          <td>
+           <p>
+            Any details you want to store about the user, such as an address
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">STRING</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">True</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">details</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">details</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-odd">
+          <td>
+           <strong id="tbl-users-col-external_id">
+            external_id
+           </strong>
+          </td>
+          <td>
+           <p>
+            A unique identifier from another system. The API treats the id as case insensitive. Example: ian1 and Ian1 are the same user
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">STRING</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">True</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">external_id</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">external_id</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-even">
+          <td>
+           <strong id="tbl-users-col-last_login_at">
+            last_login_at
+           </strong>
+          </td>
+          <td>
+           <p>
+            The last time the user signed in to Zendesk Support
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">DATETIME</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">True</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">last_login_at</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">last_login_at</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">date</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-odd">
+          <td>
+           <strong id="tbl-users-col-locale">
+            locale
+           </strong>
+          </td>
+          <td>
+           <p>
+            The user’s locale. A BCP-47 compliant tag for the locale. If both ‘locale’ and ‘locale_id’ are present on create or update, ‘locale_id’ is ignored and only ‘locale’ is used.
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">STRING</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">True</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">locale</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">locale</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-even">
+          <td>
+           <strong id="tbl-users-col-locale_id">
+            locale_id
+           </strong>
+          </td>
+          <td>
+           <p>
+            The user’s language identifier
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">INT64</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">True</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">locale_id</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">locale_id</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">integer</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-odd">
+          <td>
+           <strong id="tbl-users-col-moderator">
+            moderator
+           </strong>
+          </td>
+          <td>
+           <p>
+            Designates whether the user has forum moderation capabilities
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">BOOL</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">True</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">moderator</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">moderator</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">boolean</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-even">
+          <td>
+           <strong id="tbl-users-col-notes">
+            notes
+           </strong>
+          </td>
+          <td>
+           <p>
+            Any notes you want to store about the user
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">STRING</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">True</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">notes</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">notes</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-odd">
+          <td>
+           <strong id="tbl-users-col-only_private_comments">
+            only_private_comments
+           </strong>
+          </td>
+          <td>
+           <p>
+            true if the user can only create private comments
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">BOOL</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">True</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">only_private_comments</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">only_private_comments</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">boolean</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-even">
+          <td>
+           <strong id="tbl-users-col-organization_id">
+            organization_id
+           </strong>
+          </td>
+          <td>
+           <p>
+            The id of the user’s organization. If the user has more than one organization memberships, the id of the user’s default organization
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">INT64</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">True</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">organization_id</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">organization_id</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">integer</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-odd">
+          <td>
+           <strong id="tbl-users-col-default_group_id">
+            default_group_id
+           </strong>
+          </td>
+          <td>
+           <p>
+            The id of the user’s default group
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">INT64</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">True</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">default_group_id</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">default_group_id</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">integer</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-even">
+          <td>
+           <strong id="tbl-users-col-phone">
+            phone
+           </strong>
+          </td>
+          <td>
+           <p>
+            The user’s primary phone number. See Phone Number below
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">STRING</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">True</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">phone</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">phone</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-odd">
+          <td>
+           <strong id="tbl-users-col-shared_phone_number">
+            shared_phone_number
+           </strong>
+          </td>
+          <td>
+           <p>
+            Whether the phone number is shared or not. See Phone Number below
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">BOOL</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">True</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">shared_phone_number</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">shared_phone_number</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">boolean</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-even">
+          <td>
+           <strong id="tbl-users-col-photo">
+            photo
+           </strong>
+          </td>
+          <td>
+           <p>
+            The user’s profile picture represented as an Attachment object
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">STRUCT</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">True</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">photo</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">photo</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Attachment</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-odd">
+          <td>
+           <strong id="tbl-users-col-restricted_agent">
+            restricted_agent
+           </strong>
+          </td>
+          <td>
+           <p>
+            If the agent has any restrictions; false for admins and unrestricted agents, true for other agents
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">BOOL</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">True</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">restricted_agent</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">restricted_agent</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">boolean</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-even">
+          <td>
+           <strong id="tbl-users-col-role">
+            role
+           </strong>
+          </td>
+          <td>
+           <p>
+            The user’s role. Possible values are ‘end-user’, ‘agent’, or ‘admin’
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">STRING</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">True</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">role</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">role</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-odd">
+          <td>
+           <strong id="tbl-users-col-shared">
+            shared
+           </strong>
+          </td>
+          <td>
+           <p>
+            If the user is shared from a different Zendesk Support instance. Ticket sharing accounts only
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">BOOL</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">True</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">shared</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">shared</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">boolean</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-even">
+          <td>
+           <strong id="tbl-users-col-shared_agent">
+            shared_agent
+           </strong>
+          </td>
+          <td>
+           <p>
+            If the user is a shared agent from a different Zendesk Support instance. Ticket sharing accounts only
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">BOOL</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">True</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">shared_agent</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">shared_agent</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">boolean</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-odd">
+          <td>
+           <strong id="tbl-users-col-signature">
+            signature
+           </strong>
+          </td>
+          <td>
+           <p>
+            The user’s signature. Only agents and admins can have signatures
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">STRING</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">True</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">signature</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">signature</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-even">
+          <td>
+           <strong id="tbl-users-col-suspended">
+            suspended
+           </strong>
+          </td>
+          <td>
+           <p>
+            If the agent is suspended. Tickets from suspended users are also suspended, and these users cannot sign in to the end user portal
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">BOOL</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">True</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">suspended</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">suspended</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">boolean</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-odd">
+          <td>
+           <strong id="tbl-users-col-tags">
+            tags
+           </strong>
+          </td>
+          <td>
+           <p>
+            The user’s tags. Only present if your account has user tagging enabled
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ARRAY</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">True</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">tags</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tags</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">array</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-even">
+          <td>
+           <strong id="tbl-users-col-ticket_restriction">
+            ticket_restriction
+           </strong>
+          </td>
+          <td>
+           <p>
+            Specifies which tickets the user has access to. Possible values are: ‘organization’, ‘groups’, ‘assigned’, ‘requested’, null
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">STRING</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">True</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">ticket_restriction</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ticket_restriction</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-odd">
+          <td>
+           <strong id="tbl-users-col-time_zone">
+            time_zone
+           </strong>
+          </td>
+          <td>
+           <p>
+            The user’s time zone. See Time Zone
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">STRING</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">True</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">time_zone</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">time_zone</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-even">
+          <td>
+           <strong id="tbl-users-col-two_factor_auth_enabled">
+            two_factor_auth_enabled
+           </strong>
+          </td>
+          <td>
+           <p>
+            If two factor authentication is enabled.
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">BOOL</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">True</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">two_factor_auth_enabled</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">two_factor_auth_enabled</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">boolean</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-odd">
+          <td>
+           <strong id="tbl-users-col-updated_at">
+            updated_at
+           </strong>
+          </td>
+          <td>
+           <p>
+            The time the user was last updated
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">DATETIME</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">True</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">updated_at</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">updated_at</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">date</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-even">
+          <td>
+           <strong id="tbl-users-col-url">
+            url
+           </strong>
+          </td>
+          <td>
+           <p>
+            The user’s API url
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">STRING</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">True</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">url</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">url</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-odd">
+          <td>
+           <strong id="tbl-users-col-user_fields">
+            user_fields
+           </strong>
+          </td>
+          <td>
+           <p>
+            Values of custom fields in the user’s profile. See User Fields
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">STRUCT</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">True</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">user_fields</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">user_fields</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">object</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-even">
+          <td>
+           <strong id="tbl-users-col-verified">
+            verified
+           </strong>
+          </td>
+          <td>
+           <p>
+            The user’s primary identity is verified or not. For secondary identities, see User Identities
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">BOOL</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">True</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">verified</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">verified</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">boolean</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-odd">
+          <td>
+           <strong id="tbl-users-col-report_csv">
+            report_csv
+           </strong>
+          </td>
+          <td>
+           <p>
+            Whether or not the user can access the CSV report on the Search tab of the Reporting page in the Support admin interface. See Analyzing Help Center search results in Help Center. Only available on the Guide Professional plan
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">BOOL</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">True</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">report_csv</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">report_csv</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">boolean</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+        </tbody>
+       </table>
+       <h2 id="tbl-groups">
+        Groups
+        <a class="headerlink" href="#tbl-groups" title="Permalink to this headline">
+         ¶
+        </a>
+       </h2>
+       <table>
+        <colgroup>
+         <col style="width: 17%"/>
+         <col style="width: 83%"/>
+        </colgroup>
+        <thead>
+         <tr class="row-odd">
+          <th class="head">
+           <strong>
+            Table property
+           </strong>
+          </th>
+          <th class="head">
+           <strong>
+            Property value
+           </strong>
+          </th>
+         </tr>
+        </thead>
+        <tbody>
+         <tr class="row-even">
+          <td>
+           <strong>
+            name
+           </strong>
+          </td>
+          <td>
+           <p>
+            groups
+           </p>
+          </td>
+         </tr>
+         <tr class="row-odd">
+          <td>
+           <strong>
+            description
+           </strong>
+          </td>
+          <td>
+           <p>
+            The groups table contains info about the groups in your Zendesk Support account.
+           </p>
+          </td>
+         </tr>
+         <tr class="row-even">
+          <td>
+           <strong>
+            source
+           </strong>
+          </td>
+          <td>
+           <p>
+            groups.json
+           </p>
+          </td>
+         </tr>
+         <tr class="row-odd">
+          <td>
+           <strong>
+            partitions
+           </strong>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="p p-Indicator">-</span> <span class="nt">column</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">create_date</span>
+  <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">DAY</span>
+</pre>
+            </div>
+           </div>
+          </td>
+         </tr>
+        </tbody>
+       </table>
+       <p class="section-subtitle">
+        Columns of table: Groups
+       </p>
+       <table>
+        <colgroup>
+         <col style="width: 7%"/>
+         <col style="width: 36%"/>
+         <col style="width: 7%"/>
+         <col style="width: 7%"/>
+         <col style="width: 7%"/>
+         <col style="width: 7%"/>
+         <col style="width: 21%"/>
+         <col style="width: 7%"/>
+        </colgroup>
+        <thead>
+         <tr class="row-odd">
+          <th class="head">
+           <strong>
+            Name
+           </strong>
+          </th>
+          <th class="head">
+           <strong>
+            Description
+           </strong>
+          </th>
+          <th class="head">
+           <strong>
+            Data type
+           </strong>
+          </th>
+          <th class="head">
+           <strong>
+            Is primary key
+           </strong>
+          </th>
+          <th class="head">
+           <strong>
+            Unique
+           </strong>
+          </th>
+          <th class="head">
+           <strong>
+            Nullable
+           </strong>
+          </th>
+          <th class="head">
+           <strong>
+            source
+           </strong>
+          </th>
+          <th class="head">
+           <strong>
+            Lookup
+           </strong>
+          </th>
+         </tr>
+        </thead>
+        <tbody>
+         <tr class="row-even">
+          <td>
+           <strong id="tbl-groups-col-id">
+            id
+           </strong>
+          </td>
+          <td>
+           <p>
+            Automatically assigned when creating groups
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">INT64</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">True</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">True</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">id</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">id</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">integer</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-odd">
+          <td>
+           <strong id="tbl-groups-col-url">
+            url
+           </strong>
+          </td>
+          <td>
+           <p>
+            The API url of this group
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">STRING</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">url</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">url</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-even">
+          <td>
+           <strong id="tbl-groups-col-name">
+            name
+           </strong>
+          </td>
+          <td>
+           <p>
+            The name of the group
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">STRING</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">name</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">name</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-odd">
+          <td>
+           <strong id="tbl-groups-col-description">
+            description
+           </strong>
+          </td>
+          <td>
+           <p>
+            The description of the group
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">STRING</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">True</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">description</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">description</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-even">
+          <td>
+           <strong id="tbl-groups-col-default">
+            default
+           </strong>
+          </td>
+          <td>
+           <p>
+            If group is default for the account
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">BOOL</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">True</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">default</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">default</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">boolean</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-odd">
+          <td>
+           <strong id="tbl-groups-col-deleted">
+            deleted
+           </strong>
+          </td>
+          <td>
+           <p>
+            Deleted groups get marked as such
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">BOOL</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">deleted</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">deleted</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">boolean</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-even">
+          <td>
+           <strong id="tbl-groups-col-create_at">
+            create_at
+           </strong>
+          </td>
+          <td>
+           <p>
+            The date the group was created
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">DATETIME</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">create_at</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">create_at</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">date</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-odd">
+          <td>
+           <strong id="tbl-groups-col-created_at">
+            created_at
+           </strong>
+          </td>
+          <td>
+           <p>
+            The time the group was created
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">DATETIME</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">created_at</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">created_at</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">date</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-even">
+          <td>
+           <strong id="tbl-groups-col-updated_at">
+            updated_at
+           </strong>
+          </td>
+          <td>
+           <p>
+            The time of the last update of the group
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">DATETIME</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">updated_at</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">updated_at</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">date</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+        </tbody>
+       </table>
+       <h2 id="tbl-group_memberships">
+        Group_memberships
+        <a class="headerlink" href="#tbl-group_memberships" title="Permalink to this headline">
+         ¶
+        </a>
+       </h2>
+       <table>
+        <colgroup>
+         <col style="width: 17%"/>
+         <col style="width: 83%"/>
+        </colgroup>
+        <thead>
+         <tr class="row-odd">
+          <th class="head">
+           <strong>
+            Table property
+           </strong>
+          </th>
+          <th class="head">
+           <strong>
+            Property value
+           </strong>
+          </th>
+         </tr>
+        </thead>
+        <tbody>
+         <tr class="row-even">
+          <td>
+           <strong>
+            name
+           </strong>
+          </td>
+          <td>
+           <p>
+            group_memberships
+           </p>
+          </td>
+         </tr>
+         <tr class="row-odd">
+          <td>
+           <strong>
+            description
+           </strong>
+          </td>
+          <td>
+           <p>
+            The group_memberships table contains info about the groups your Zendesk Support agents are members of.
+           </p>
+          </td>
+         </tr>
+         <tr class="row-even">
+          <td>
+           <strong>
+            source
+           </strong>
+          </td>
+          <td>
+           <p>
+            group_memberships.json
+           </p>
+          </td>
+         </tr>
+         <tr class="row-odd">
+          <td>
+           <strong>
+            partitions
+           </strong>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="p p-Indicator">-</span> <span class="nt">column</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">create_date</span>
+  <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">DAY</span>
+</pre>
+            </div>
+           </div>
+          </td>
+         </tr>
+        </tbody>
+       </table>
+       <p class="section-subtitle">
+        Columns of table: Group_memberships
+       </p>
+       <table>
+        <colgroup>
+         <col style="width: 7%"/>
+         <col style="width: 36%"/>
+         <col style="width: 7%"/>
+         <col style="width: 7%"/>
+         <col style="width: 7%"/>
+         <col style="width: 7%"/>
+         <col style="width: 21%"/>
+         <col style="width: 7%"/>
+        </colgroup>
+        <thead>
+         <tr class="row-odd">
+          <th class="head">
+           <strong>
+            Name
+           </strong>
+          </th>
+          <th class="head">
+           <strong>
+            Description
+           </strong>
+          </th>
+          <th class="head">
+           <strong>
+            Data type
+           </strong>
+          </th>
+          <th class="head">
+           <strong>
+            Is primary key
+           </strong>
+          </th>
+          <th class="head">
+           <strong>
+            Unique
+           </strong>
+          </th>
+          <th class="head">
+           <strong>
+            Nullable
+           </strong>
+          </th>
+          <th class="head">
+           <strong>
+            source
+           </strong>
+          </th>
+          <th class="head">
+           <strong>
+            Lookup
+           </strong>
+          </th>
+         </tr>
+        </thead>
+        <tbody>
+         <tr class="row-even">
+          <td>
+           <strong id="tbl-group_memberships-col-id">
+            id
+           </strong>
+          </td>
+          <td>
+           <p>
+            Automatically assigned upon creation
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">INT64</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">True</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">True</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">id</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">id</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">integer</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-odd">
+          <td>
+           <strong id="tbl-group_memberships-col-url">
+            url
+           </strong>
+          </td>
+          <td>
+           <p>
+            The API url of this record
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">STRING</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">True</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">url</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">url</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">string</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-even">
+          <td>
+           <strong id="tbl-group_memberships-col-user_id">
+            user_id
+           </strong>
+          </td>
+          <td>
+           <p>
+            The id of an agent
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">INT64</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">user_id</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">user_id</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">integer</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-odd">
+          <td>
+           <strong id="tbl-group_memberships-col-group_id">
+            group_id
+           </strong>
+          </td>
+          <td>
+           <p>
+            The id of a group
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">INT64</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">group_id</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">group_id</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">integer</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-even">
+          <td>
+           <strong id="tbl-group_memberships-col-default">
+            default
+           </strong>
+          </td>
+          <td>
+           <p>
+            If true, tickets assigned directly to the agent will assume this membership’s group.
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">BOOL</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">True</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">default</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">default</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">boolean</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-odd">
+          <td>
+           <strong id="tbl-group_memberships-col-created_at">
+            created_at
+           </strong>
+          </td>
+          <td>
+           <p>
+            The time the membership was created
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">DATETIME</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">created_at</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">created_at</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">date</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+         <tr class="row-even">
+          <td>
+           <strong id="tbl-group_memberships-col-updated_at">
+            updated_at
+           </strong>
+          </td>
+          <td>
+           <p>
+            The time of the last update of the membership
+           </p>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">big-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">DATETIME</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-python notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="kc">False</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <div class="highlight-yaml notranslate">
+            <div class="highlight">
+             <pre><span></span><span class="nt">fields</span><span class="p">:</span>
+  <span class="nt">updated_at</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">updated_at</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">date</span>
+</pre>
+            </div>
+           </div>
+          </td>
+          <td>
+           <p>
+           </p>
+          </td>
+         </tr>
+        </tbody>
+       </table>
+      </article>
+     </div>
+    </div>
+   </main>
+  </div>
+  <footer class="md-footer">
+   <div class="md-footer-nav">
+    <nav class="md-footer-nav__inner md-grid">
+     <a class="md-flex md-footer-nav__link md-footer-nav__link--prev" href="infrastructure.html" rel="prev" title="Used infrastructure">
+      <div class="md-flex__cell md-flex__cell--shrink">
+       <i class="md-icon md-icon--arrow-back md-footer-nav__button">
+       </i>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+       <span class="md-flex__ellipsis">
+        <span class="md-footer-nav__direction">
+         Previous
+        </span>
+        Used infrastructure
+       </span>
+      </div>
+     </a>
+    </nav>
+   </div>
+   <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+     <div class="md-footer-copyright">
+      <div class="md-footer-copyright__highlight">
+       © Copyright 2020, Michal Švarc.
+      </div>
+      Last updated on
+              Jul 19, 2020.
+      <br/>
+      Created using
+      <a href="http://www.sphinx-doc.org/">
+       Sphinx
+      </a>
+      3.1.2.
+             and
+      <a href="https://github.com/bashtage/sphinx-material/">
+       Material for
+              Sphinx
+      </a>
+     </div>
+    </div>
+   </div>
+  </footer>
+  <script src="_static/javascripts/application.js">
+  </script>
+  <script>
+   app.initialize({version: "1.0.4", url: {base: ".."}})
+  </script>
+ </body>
+</html>

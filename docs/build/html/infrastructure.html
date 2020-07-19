@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <meta content="width=device-width,initial-scale=1" name="viewport"/>
+  <meta content="ie=edge" http-equiv="x-ua-compatible"/>
+  <meta content="Copy to clipboard" name="lang:clipboard.copy"/>
+  <meta content="Copied to clipboard" name="lang:clipboard.copied"/>
+  <meta content="en" name="lang:search.language"/>
+  <meta content="True" name="lang:search.pipeline.stopwords"/>
+  <meta content="True" name="lang:search.pipeline.trimmer"/>
+  <meta content="No matching documents" name="lang:search.result.none"/>
+  <meta content="1 matching document" name="lang:search.result.one"/>
+  <meta content="# matching documents" name="lang:search.result.other"/>
+  <meta content="[\s\-]+" name="lang:search.tokenizer"/>
+  <link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,500,700|Roboto:300,400,400i,700&amp;display=fallback" rel="stylesheet"/>
+  <style>
+   body,
+      input {
+        font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif
+      }
+
+      code,
+      kbd,
+      pre {
+        font-family: "Roboto Mono", "Courier New", Courier, monospace
+      }
+  </style>
+  <link href="_static/stylesheets/application.css" rel="stylesheet"/>
+  <link href="_static/stylesheets/application-palette.css" rel="stylesheet"/>
+  <link href="_static/stylesheets/application-fixes.css" rel="stylesheet"/>
+  <link href="_static/fonts/material-icons.css" rel="stylesheet"/>
+  <meta content="#2196f3" name="theme-color"/>
+  <script src="_static/javascripts/modernizr.js">
+  </script>
+  <script>
+   window.ga = window.ga || function () {
+          (ga.q = ga.q || []).push(arguments)
+      };
+      ga.l = +new Date;
+      ga('create', 'UA-XXXXX', 'auto');
+      ga('send', 'pageview');
+  </script>
+  <script async="" src="https://www.google-analytics.com/analytics.js">
+  </script>
+  <title>
+   Used infrastructure — Zendesk data pipeline
+  </title>
+  <link href="_static/material.css" rel="stylesheet" type="text/css"/>
+  <link href="_static/pygments.css" rel="stylesheet" type="text/css"/>
+  <link href="_static/styles/custom.css" rel="stylesheet" type="text/css"/>
+  <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js">
+  </script>
+  <script src="_static/jquery.js">
+  </script>
+  <script src="_static/underscore.js">
+  </script>
+  <script src="_static/doctools.js">
+  </script>
+  <script src="_static/language_data.js">
+  </script>
+  <link href="genindex.html" rel="index" title="Index"/>
+  <link href="search.html" rel="search" title="Search"/>
+  <link href="data-warehouse.html" rel="next" title="Data model"/>
+  <link href="index.html" rel="prev" title="Zendesk data pipeline"/>
+ </head>
+ <body data-md-color-accent="cyan" data-md-color-primary="blue" dir="ltr">
+  <svg class="md-svg">
+   <defs data-children-count="0">
+    <svg height="448" id="__github" viewbox="0 0 416 448" width="416" xmlns="http://www.w3.org/2000/svg">
+     <path d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z" fill="currentColor">
+     </path>
+    </svg>
+   </defs>
+  </svg>
+  <input class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+  <input class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+  <label class="md-overlay" data-md-component="overlay" for="__drawer">
+  </label>
+  <a class="md-skip" href="#infrastructure" tabindex="1">
+   Skip to content
+  </a>
+  <header class="md-header" data-md-component="header">
+   <nav class="md-header-nav md-grid">
+    <div class="md-flex navheader">
+     <div class="md-flex__cell md-flex__cell--shrink">
+      <a class="md-header-nav__button md-logo" href="index.html" title="Zendesk data pipeline">
+       <i class="md-icon">
+        
+       </i>
+      </a>
+     </div>
+     <div class="md-flex__cell md-flex__cell--shrink">
+      <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer">
+      </label>
+     </div>
+     <div class="md-flex__cell md-flex__cell--stretch">
+      <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+       <span class="md-header-nav__topic">
+        Zendesk data pipeline
+       </span>
+       <span class="md-header-nav__topic">
+        Used infrastructure
+       </span>
+      </div>
+     </div>
+     <div class="md-flex__cell md-flex__cell--shrink">
+      <label class="md-icon md-icon--search md-header-nav__button" for="__search">
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+       <label class="md-search__overlay" for="__search">
+       </label>
+       <div class="md-search__inner" role="search">
+        <form action="search.html" class="md-search__form" method="GET" name="search">
+         <input autocapitalize="off" autocomplete="off" class="md-search__input" data-md-component="query" data-md-state="active" name="q" placeholder="Search" spellcheck="false" type="text"/>
+         <label class="md-icon md-search__icon" for="__search">
+         </label>
+         <button class="md-icon md-search__icon" data-md-component="reset" tabindex="-1" type="reset">
+          
+         </button>
+        </form>
+        <div class="md-search__output">
+         <div class="md-search__scrollwrap" data-md-scrollfix="">
+          <div class="md-search-result" data-md-component="result">
+           <div class="md-search-result__meta">
+            Type to start searching
+           </div>
+           <ol class="md-search-result__list">
+           </ol>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+     <script src="_static/javascripts/version_dropdown.js">
+     </script>
+     <script>
+      var json_loc = ""versions.json"",
+        target_loc = "../",
+        text = "Versions";
+    $( document ).ready( add_version_dropdown(json_loc, target_loc, text));
+     </script>
+    </div>
+   </nav>
+  </header>
+  <div class="md-container">
+   <nav class="md-tabs" data-md-component="tabs">
+    <div class="md-tabs__inner md-grid">
+     <ul class="md-tabs__list">
+      <li class="md-tabs__item">
+       <a class="md-tabs__link" href="index.html">
+        Zendesk data pipeline
+       </a>
+      </li>
+     </ul>
+    </div>
+   </nav>
+   <main class="md-main">
+    <div class="md-main__inner md-grid" data-md-component="container">
+     <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+      <div class="md-sidebar__scrollwrap">
+       <div class="md-sidebar__inner">
+        <nav class="md-nav md-nav--primary" data-md-level="0">
+         <label class="md-nav__title md-nav__title--site" for="__drawer">
+          <a class="md-nav__button md-logo" href="index.html" title="Zendesk data pipeline">
+           <i class="md-icon">
+            
+           </i>
+          </a>
+          <a href="index.html" title="Zendesk data pipeline">
+           Zendesk data pipeline
+          </a>
+         </label>
+         <ul class="md-nav__list">
+          <li class="md-nav__item">
+           <span class="md-nav__link caption">
+            <span class="caption-text">
+             Introduction
+            </span>
+           </span>
+          </li>
+          <li class="md-nav__item">
+           <a class="md-nav__link" href="index.html">
+            Zendesk data pipeline
+           </a>
+          </li>
+          <li class="md-nav__item">
+           <span class="md-nav__link caption">
+            <span class="caption-text">
+             Infrastructure + data pipeline
+            </span>
+           </span>
+          </li>
+          <li class="md-nav__item">
+           <input class="md-toggle md-nav__toggle" data-md-toggle="toc" id="__toc" type="checkbox"/>
+           <label class="md-nav__link md-nav__link--active" for="__toc">
+            Used infrastructure
+           </label>
+           <a class="md-nav__link md-nav__link--active" href="#">
+            Used infrastructure
+           </a>
+           <nav class="md-nav md-nav--secondary">
+            <label class="md-nav__title" for="__toc">
+             Contents
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix="">
+             <li class="md-nav__item">
+              <a class="md-nav__link" href="#infrastructure--page-root">
+               Used infrastructure
+              </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#cloud-scheduler">
+                  Cloud Scheduler
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#cloud-pub-sub">
+                  Cloud Pub/Sub
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#cloud-functions">
+                  Cloud Functions
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#cloud-storage">
+                  Cloud Storage
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#bigquery">
+                  BigQuery
+                 </a>
+                </li>
+               </ul>
+              </nav>
+             </li>
+             <li class="md-nav__item">
+              <a class="md-nav__link" href="#data-processing-pipeline">
+               Data processing pipeline
+              </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#data-retrieval-extract">
+                  1. Data retrieval (EXTRACT)
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#data-retrieval-transfrom">
+                  2. Data retrieval (TRANSFROM)
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#update-big-query-dataset-load">
+                  3. Update Big Query dataset (LOAD)
+                 </a>
+                </li>
+               </ul>
+              </nav>
+             </li>
+             <li class="md-nav__item">
+              <a class="md-nav__extra_link" href="_sources/infrastructure.rst.txt">
+               Show Source
+              </a>
+             </li>
+            </ul>
+           </nav>
+           <ul class="md-nav__list">
+            <li class="md-nav__item">
+             <a class="md-nav__link" href="#cloud-scheduler">
+              Cloud Scheduler
+             </a>
+            </li>
+            <li class="md-nav__item">
+             <a class="md-nav__link" href="#cloud-pub-sub">
+              Cloud Pub/Sub
+             </a>
+            </li>
+            <li class="md-nav__item">
+             <a class="md-nav__link" href="#cloud-functions">
+              Cloud Functions
+             </a>
+            </li>
+            <li class="md-nav__item">
+             <a class="md-nav__link" href="#cloud-storage">
+              Cloud Storage
+             </a>
+            </li>
+            <li class="md-nav__item">
+             <a class="md-nav__link" href="#bigquery">
+              BigQuery
+             </a>
+            </li>
+           </ul>
+          </li>
+          <li class="md-nav__item">
+           <a class="md-nav__link" href="#data-processing-pipeline">
+            Data processing pipeline
+           </a>
+           <ul class="md-nav__list">
+            <li class="md-nav__item">
+             <a class="md-nav__link" href="#data-retrieval-extract">
+              1. Data retrieval (EXTRACT)
+             </a>
+            </li>
+            <li class="md-nav__item">
+             <a class="md-nav__link" href="#data-retrieval-transfrom">
+              2. Data retrieval (TRANSFROM)
+             </a>
+            </li>
+            <li class="md-nav__item">
+             <a class="md-nav__link" href="#update-big-query-dataset-load">
+              3. Update Big Query dataset (LOAD)
+             </a>
+            </li>
+           </ul>
+          </li>
+          <li class="md-nav__item">
+           <span class="md-nav__link caption">
+            <span class="caption-text">
+             Data warehouse
+            </span>
+           </span>
+          </li>
+          <li class="md-nav__item">
+           <a class="md-nav__link" href="data-warehouse.html">
+            Data model
+           </a>
+          </li>
+          <li class="md-nav__item">
+           <a class="md-nav__link" href="data-warehouse.html#tables">
+            Tables
+           </a>
+          </li>
+         </ul>
+        </nav>
+       </div>
+      </div>
+     </div>
+     <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+      <div class="md-sidebar__scrollwrap">
+       <div class="md-sidebar__inner">
+        <nav class="md-nav md-nav--secondary">
+         <label class="md-nav__title" for="__toc">
+          Contents
+         </label>
+         <ul class="md-nav__list" data-md-scrollfix="">
+          <li class="md-nav__item">
+           <a class="md-nav__link" href="#infrastructure--page-root">
+            Used infrastructure
+           </a>
+           <nav class="md-nav">
+            <ul class="md-nav__list">
+             <li class="md-nav__item">
+              <a class="md-nav__link" href="#cloud-scheduler">
+               Cloud Scheduler
+              </a>
+             </li>
+             <li class="md-nav__item">
+              <a class="md-nav__link" href="#cloud-pub-sub">
+               Cloud Pub/Sub
+              </a>
+             </li>
+             <li class="md-nav__item">
+              <a class="md-nav__link" href="#cloud-functions">
+               Cloud Functions
+              </a>
+             </li>
+             <li class="md-nav__item">
+              <a class="md-nav__link" href="#cloud-storage">
+               Cloud Storage
+              </a>
+             </li>
+             <li class="md-nav__item">
+              <a class="md-nav__link" href="#bigquery">
+               BigQuery
+              </a>
+             </li>
+            </ul>
+           </nav>
+          </li>
+          <li class="md-nav__item">
+           <a class="md-nav__link" href="#data-processing-pipeline">
+            Data processing pipeline
+           </a>
+           <nav class="md-nav">
+            <ul class="md-nav__list">
+             <li class="md-nav__item">
+              <a class="md-nav__link" href="#data-retrieval-extract">
+               1. Data retrieval (EXTRACT)
+              </a>
+             </li>
+             <li class="md-nav__item">
+              <a class="md-nav__link" href="#data-retrieval-transfrom">
+               2. Data retrieval (TRANSFROM)
+              </a>
+             </li>
+             <li class="md-nav__item">
+              <a class="md-nav__link" href="#update-big-query-dataset-load">
+               3. Update Big Query dataset (LOAD)
+              </a>
+             </li>
+            </ul>
+           </nav>
+          </li>
+          <li class="md-nav__item">
+           <a class="md-nav__extra_link" href="_sources/infrastructure.rst.txt">
+            Show Source
+           </a>
+          </li>
+          <li class="md-nav__item" id="searchbox">
+          </li>
+         </ul>
+        </nav>
+       </div>
+      </div>
+     </div>
+     <div class="md-content">
+      <article class="md-content__inner md-typeset" role="main">
+       <span id="infrastructure">
+       </span>
+       <h1 id="infrastructure--page-root">
+        Used infrastructure
+        <a class="headerlink" href="#infrastructure--page-root" title="Permalink to this headline">
+         ¶
+        </a>
+       </h1>
+       <p>
+        This section describes used Google Cloud Platform (GCP) services used for data transfer from Zendesk Support (via REST APIs) to data warehouse in BigQuery.
+       </p>
+       <img alt="_images/data-flow-diagram-high-level.png" src="_images/data-flow-diagram-high-level.png"/>
+       <p>
+        The main used services of GCP are:
+       </p>
+       <ul class="simple">
+        <li>
+         <p>
+          Cloud Scheduler
+         </p>
+        </li>
+        <li>
+         <p>
+          Cloud Pub/Sub
+         </p>
+        </li>
+        <li>
+         <p>
+          Cloud Functions
+         </p>
+        </li>
+        <li>
+         <p>
+          Cloud Storage
+         </p>
+        </li>
+        <li>
+         <p>
+          BigQuery
+         </p>
+        </li>
+       </ul>
+       <div class="admonition note">
+        <p class="admonition-title">
+         Note
+        </p>
+        <p>
+         Following text uses a term
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           subject
+          </span>
+         </code>
+         . The world subject is generalization for all Zendesk Support entities:
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           users
+          </span>
+         </code>
+         ,
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           groups
+          </span>
+         </code>
+         ,
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           organizations
+          </span>
+         </code>
+         ,
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           tickets
+          </span>
+         </code>
+         ,
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           group_membership
+          </span>
+         </code>
+         ,
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           organization_membership
+          </span>
+         </code>
+        </p>
+       </div>
+       <h2 id="cloud-scheduler">
+        Cloud Scheduler
+        <a class="headerlink" href="#cloud-scheduler" title="Permalink to this headline">
+         ¶
+        </a>
+       </h2>
+       <p>
+        Cloud Scheduler is used for automated triggering the data pipeline from Zendesk Support APIs to the data warehouse. The scheduling details are below:
+       </p>
+       <p>
+        <code class="docutils literal notranslate">
+         <span class="pre">
+          [{'subject':
+         </span>
+         <span class="pre">
+          'organizations',
+         </span>
+         <span class="pre">
+          'schedule':
+         </span>
+         <span class="pre">
+          '0
+         </span>
+         <span class="pre">
+          6
+         </span>
+         <span class="pre">
+          *
+         </span>
+         <span class="pre">
+          *
+         </span>
+         <span class="pre">
+          *'},
+         </span>
+         <span class="pre">
+          {'subject':
+         </span>
+         <span class="pre">
+          'users',
+         </span>
+         <span class="pre">
+          'schedule':
+         </span>
+         <span class="pre">
+          '5
+         </span>
+         <span class="pre">
+          6
+         </span>
+         <span class="pre">
+          *
+         </span>
+         <span class="pre">
+          *
+         </span>
+         <span class="pre">
+          *'}]
+         </span>
+        </code>
+       </p>
+       <p>
+        The Cloud Scheduler job names convention is:
+        <code class="docutils literal notranslate">
+         <span class="pre">
+          adm--zendesk-support--job--{subject}
+         </span>
+        </code>
+       </p>
+       <h2 id="cloud-pub-sub">
+        Cloud Pub/Sub
+        <a class="headerlink" href="#cloud-pub-sub" title="Permalink to this headline">
+         ¶
+        </a>
+       </h2>
+       <p>
+        Cloud Pub/Sub services are used to trigger the Cloud Function with with appropriate parameters. The Pub/Sub topic devote to this purpose is:
+        <code class="docutils literal notranslate">
+         <span class="pre">
+          adm--zendesk-support--ingress-etl
+         </span>
+        </code>
+       </p>
+       <h2 id="cloud-functions">
+        Cloud Functions
+        <a class="headerlink" href="#cloud-functions" title="Permalink to this headline">
+         ¶
+        </a>
+       </h2>
+       <p>
+        This cloud service is used for extracting data from Zendesk Support APIs ,transforming it to the structure consumable by BigQuery and updating BigQuery dataset:
+        <code class="docutils literal notranslate">
+         <span class="pre">
+          adm_zendesk_support
+         </span>
+        </code>
+        The name of the Cloud Function for this purpose is:
+        <code class="docutils literal notranslate">
+         <span class="pre">
+          adm--zendesk-support--ingress-etl
+         </span>
+        </code>
+        . This function consumes two arguments:
+       </p>
+       <ul class="simple">
+        <li>
+         <p>
+          subject (e.g.
+          <code class="docutils literal notranslate">
+           <span class="pre">
+            users
+           </span>
+          </code>
+          ,
+          <code class="docutils literal notranslate">
+           <span class="pre">
+            organizations
+           </span>
+          </code>
+          ,
+          <code class="docutils literal notranslate">
+           <span class="pre">
+            tickets
+           </span>
+          </code>
+          )
+         </p>
+        </li>
+        <li>
+         <p>
+          zendesk-support-api-request (url to the Zendesk Support API which should be used to provide data)
+         </p>
+        </li>
+       </ul>
+       <p>
+        If the
+        <code class="docutils literal notranslate">
+         <span class="pre">
+          zendesk-support-api-request
+         </span>
+        </code>
+        is not provided the function automatically detects based on the subject + available content in the BigQuery dataset what is the right URL. Basic function run scenario is:
+       </p>
+       <ol class="arabic simple">
+        <li>
+         <p>
+          call Zendesk Support APIs to get data from Zendesk and store them in Cloud Storage in a raw format (JSON files)
+         </p>
+        </li>
+        <li>
+         <p>
+          transform raw data from Zendesk Support to prepare it for a load into BigQuery tables
+         </p>
+        </li>
+        <li>
+         <p>
+          load data into temporary table in BigQuery
+         </p>
+        </li>
+        <li>
+         <p>
+          patch records in BigQuery dataset
+         </p>
+        </li>
+       </ol>
+       <h2 id="cloud-storage">
+        Cloud Storage
+        <a class="headerlink" href="#cloud-storage" title="Permalink to this headline">
+         ¶
+        </a>
+       </h2>
+       <p>
+        Cloud Storage contains two buckets:
+       </p>
+       <ul class="simple">
+        <li>
+         <p>
+          <code class="docutils literal notranslate">
+           <span class="pre">
+            adm--zendesk-support--assets
+           </span>
+          </code>
+         </p>
+        </li>
+        <li>
+         <p>
+          <code class="docutils literal notranslate">
+           <span class="pre">
+            adm--zendesk-support--ingress
+           </span>
+          </code>
+         </p>
+        </li>
+       </ul>
+       <p>
+        The first bucket contains source code for the Cloud Function in a zip file
+        <code class="docutils literal notranslate">
+         <span class="pre">
+          runner.zip
+         </span>
+        </code>
+        . The second storage bucket is used as an archive of files from previous runs and has configured archiving policy. Objects in this bucket follow naming convention like this:
+        <code class="docutils literal notranslate">
+         <span class="pre">
+          {run-date}/{subject}/{raw/bq}/part-{run-timestamp}.json
+         </span>
+        </code>
+        . This convention creates following directory structure:
+       </p>
+       <div class="highlight-default notranslate">
+        <div class="highlight">
+         <pre><span></span>20200714
+├── groups
+|   ├── raw
+|   |   ├── part--2020-07-14--08:43:23+02.json
+|   |   └── part--2020-07-14--08:43:33+02.json
+|   └── bq
+|       ├── part--2020-07-14--08:43:24+02.json
+|       └── part--2020-07-14--08:43:34+02.json
+├── users
+├── ...
+└── organizations
+20200714
+├── groups
+├── ...
+</pre>
+        </div>
+       </div>
+       <h2 id="bigquery">
+        BigQuery
+        <a class="headerlink" href="#bigquery" title="Permalink to this headline">
+         ¶
+        </a>
+       </h2>
+       <p>
+        All the data related to the Zendesk Support are stored in the BigQuery dataset
+        <code class="docutils literal notranslate">
+         <span class="pre">
+          adm_zendesk_support
+         </span>
+        </code>
+        with default table expiration
+        <code class="docutils literal notranslate">
+         <span class="pre">
+          60480000
+         </span>
+        </code>
+        seconds.
+       </p>
+       <p>
+        Permanent table follows this naming pattern
+        <code class="docutils literal notranslate">
+         <span class="pre">
+          {subject}
+         </span>
+        </code>
+        . Temporary table are prefixed by
+        <code class="docutils literal notranslate">
+         <span class="pre">
+          __temp_
+         </span>
+        </code>
+        , e.g.
+        <code class="docutils literal notranslate">
+         <span class="pre">
+          __temp_users
+         </span>
+        </code>
+        .
+       </p>
+       <h1 id="data-processing-pipeline">
+        Data processing pipeline
+        <a class="headerlink" href="#data-processing-pipeline" title="Permalink to this headline">
+         ¶
+        </a>
+       </h1>
+       <p>
+        This section outlines generic data flow which is common for all Zendesk Support objects.
+       </p>
+       <h2 id="data-retrieval-extract">
+        1. Data retrieval (EXTRACT)
+        <a class="headerlink" href="#data-retrieval-extract" title="Permalink to this headline">
+         ¶
+        </a>
+       </h2>
+       <ul class="simple">
+        <li>
+         <p>
+          <strong>
+           [STEP 0]:
+          </strong>
+          get Zendesk Support API address (if is not provided as Cloud Function parameter, it is automatically created based on subject and last update run)
+         </p>
+        </li>
+        <li>
+         <p>
+          <strong>
+           [STEP 1]:
+          </strong>
+          call Zendesk Support APIs to get data in JSON format
+         </p>
+        </li>
+        <li>
+         <p>
+          <strong>
+           [STEP 2]:
+          </strong>
+          save retrieved data in a raw format to the ingress bucket (object name pattern
+          <code class="docutils literal notranslate">
+           <span class="pre">
+            {run-date}/{subject}/raw/part-{run-timestamp}.json
+           </span>
+          </code>
+          )
+         </p>
+        </li>
+       </ul>
+       <h2 id="data-retrieval-transfrom">
+        2. Data retrieval (TRANSFROM)
+        <a class="headerlink" href="#data-retrieval-transfrom" title="Permalink to this headline">
+         ¶
+        </a>
+       </h2>
+       <ul class="simple">
+        <li>
+         <p>
+          <strong>
+           [STEP 1]:
+          </strong>
+          transform data into a format consumable by BigQuery load
+         </p>
+        </li>
+        <li>
+         <p>
+          <strong>
+           [STEP 2]:
+          </strong>
+          save transformed data in the ingress bucket (object name pattern
+          <code class="docutils literal notranslate">
+           <span class="pre">
+            {run-date}/{subject}/bq/part-{run-timestamp}.json
+           </span>
+          </code>
+          )
+         </p>
+        </li>
+       </ul>
+       <h2 id="update-big-query-dataset-load">
+        3. Update Big Query dataset (LOAD)
+        <a class="headerlink" href="#update-big-query-dataset-load" title="Permalink to this headline">
+         ¶
+        </a>
+       </h2>
+       <ul class="simple">
+        <li>
+         <p>
+          <strong>
+           [STEP 1]:
+          </strong>
+          upload data from ingress object to temporary tables in BigQuery dataset
+         </p>
+        </li>
+        <li>
+         <p>
+          <strong>
+           [STEP 2]:
+          </strong>
+          update existing tuples in subject tables
+         </p>
+        </li>
+        <li>
+         <p>
+          <strong>
+           [STEP 3]:
+          </strong>
+          insert non-existing records into subject tables
+         </p>
+        </li>
+        <li>
+         <p>
+          <strong>
+           [STEP 4]:
+          </strong>
+          drop temporary tables
+         </p>
+        </li>
+       </ul>
+      </article>
+     </div>
+    </div>
+   </main>
+  </div>
+  <footer class="md-footer">
+   <div class="md-footer-nav">
+    <nav class="md-footer-nav__inner md-grid">
+     <a class="md-flex md-footer-nav__link md-footer-nav__link--prev" href="index.html" rel="prev" title="Zendesk data pipeline">
+      <div class="md-flex__cell md-flex__cell--shrink">
+       <i class="md-icon md-icon--arrow-back md-footer-nav__button">
+       </i>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+       <span class="md-flex__ellipsis">
+        <span class="md-footer-nav__direction">
+         Previous
+        </span>
+        Zendesk data pipeline
+       </span>
+      </div>
+     </a>
+     <a class="md-flex md-footer-nav__link md-footer-nav__link--next" href="data-warehouse.html" rel="next" title="Data model">
+      <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+       <span class="md-flex__ellipsis">
+        <span class="md-footer-nav__direction">
+         Next
+        </span>
+        Data model
+       </span>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+       <i class="md-icon md-icon--arrow-forward md-footer-nav__button">
+       </i>
+      </div>
+     </a>
+    </nav>
+   </div>
+   <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+     <div class="md-footer-copyright">
+      <div class="md-footer-copyright__highlight">
+       © Copyright 2020, Michal Švarc.
+      </div>
+      Last updated on
+              Jul 19, 2020.
+      <br/>
+      Created using
+      <a href="http://www.sphinx-doc.org/">
+       Sphinx
+      </a>
+      3.1.2.
+             and
+      <a href="https://github.com/bashtage/sphinx-material/">
+       Material for
+              Sphinx
+      </a>
+     </div>
+    </div>
+   </div>
+  </footer>
+  <script src="_static/javascripts/application.js">
+  </script>
+  <script>
+   app.initialize({version: "1.0.4", url: {base: ".."}})
+  </script>
+ </body>
+</html>
